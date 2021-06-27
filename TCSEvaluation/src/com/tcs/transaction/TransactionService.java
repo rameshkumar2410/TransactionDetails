@@ -80,6 +80,11 @@ public class TransactionService {
 				}
 
 			}
+			
+			Optional<Entry<String, BigDecimal>> maxEntry = highestSpendingMap.entrySet().stream()
+					.min((Entry<String, BigDecimal> e1, Entry<String, BigDecimal> e2) -> e1.getValue()
+							.compareTo(e2.getValue()));
+			highestSpending = maxEntry.get().getValue();
 
 			BigDecimal saving = new BigDecimal(String.valueOf(expense)).add(new BigDecimal(String.valueOf(income)));
 			transactionLedger = new TransactionLedger();
@@ -88,14 +93,6 @@ public class TransactionService {
 			transactionLedger.setTotalSaving(saving);
 			transactionLedger.setHighestSpendings(highestSpending);
 			transactionLedger.setHighestSpendingMonth(month);
-
-			Optional<Entry<String, BigDecimal>> maxEntry = highestSpendingMap.entrySet().stream()
-					.min((Entry<String, BigDecimal> e1, Entry<String, BigDecimal> e2) -> e1.getValue()
-							.compareTo(e2.getValue()));
-			highestSpending = maxEntry.get().getValue();
-
-			highestSpendingMap.entrySet().stream()
-					.forEach(val -> System.out.println(val.getKey() + " ==== " + val.getValue()));
 
 			System.out.println("Expense ==" + expense + "  Income== " + income + " Saving   == " + saving
 					+ " highestSpending == " + highestSpending + " Month ==" + month);
