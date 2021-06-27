@@ -1,11 +1,16 @@
 package com.tcs.transaction;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
 
 /**
  * Class to perform Transaction Service
@@ -22,53 +27,75 @@ public class TransactionService {
 	 */
 	public List<TransactionDetails> generateMockTransaction() throws Exception {
 		List<TransactionDetails> transactList = new ArrayList<TransactionDetails>();
-		transactList.add(new TransactionDetails(getSimpleDateFormat("25-01-2020"), -4000, "SBI MF"));
-		transactList.add(new TransactionDetails(getSimpleDateFormat("28-01-2020"), -1740.6, "Stationary"));
-		transactList.add(new TransactionDetails(getSimpleDateFormat("25-02-2020"), -2800.3, "Grocery"));
-		transactList.add(new TransactionDetails(getSimpleDateFormat("05-03-2020"), 20000.6, "Salary"));
+		transactList.add(
+				new TransactionDetails(getSimpleDateFormat("28-01-2020"), BigDecimal.valueOf(-1740.6), "Stationary"));
+		transactList
+				.add(new TransactionDetails(getSimpleDateFormat("25-01-2020"), BigDecimal.valueOf(-4000), "SBI MF"));
+		transactList
+				.add(new TransactionDetails(getSimpleDateFormat("21-01-2020"), BigDecimal.valueOf(-6000), "SBI MF"));
+		transactList
+				.add(new TransactionDetails(getSimpleDateFormat("27-02-2020"), BigDecimal.valueOf(-9800.3), "Grocery"));
+		transactList
+				.add(new TransactionDetails(getSimpleDateFormat("28-02-2020"), BigDecimal.valueOf(-9800.3), "Grocery"));
+		transactList
+				.add(new TransactionDetails(getSimpleDateFormat("06-03-2020"), BigDecimal.valueOf(20000.6), "Salary"));
+		transactList
+				.add(new TransactionDetails(getSimpleDateFormat("05-03-2020"), BigDecimal.valueOf(20000.6), "Salary"));
 		return transactList;
 
 	}
 
 	/**
 	 * Method will provide the TransactionDetails
+	 * 
 	 * @return TransactionLedger
 	 */
 	public TransactionLedger getTransactionDetails() {
 
+		Map<String, BigDecimal> highestSpendingMap = new HashMap<String, BigDecimal>();
 		List<TransactionDetails> transactionDataList = null;
-		double expense = 0.0;
-		double income = 0.0;
-		double highestSpending = 0.0;
+		BigDecimal expense = BigDecimal.valueOf(0.0);
+		BigDecimal income = BigDecimal.valueOf(0.0);
+		BigDecimal highestSpending = BigDecimal.valueOf(0.0);
 		String month = null;
 		TransactionLedger transactionLedger = null;
 
 		try {
 			transactionDataList = generateMockTransaction();
 			for (TransactionDetails tranDetail : transactionDataList) {
-
-				if (tranDetail.getAmount() < 0) {
-					if (highestSpending > tranDetail.getAmount()) {
-						Calendar calendar = Calendar.getInstance();
-						calendar.setTime(tranDetail.getDateOfTransaction());
-						month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
+				if (tranDetail.getAmount().compareTo(BigDecimal.ZERO) < 0) {
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(tranDetail.getDateOfTransaction());
+					month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
+					if (highestSpendingMap.containsKey(month)) {
+						highestSpendingMap.put(month, highestSpending = highestSpending.add(tranDetail.getAmount()));
+					} else {
 						highestSpending = tranDetail.getAmount();
-
+						highestSpendingMap.put(month, highestSpending);
 					}
-					expense = expense + tranDetail.getAmount();
+
+					expense = expense.add(tranDetail.getAmount());
 				} else {
-					income = income + tranDetail.getAmount();
+					income = income.add(tranDetail.getAmount());
 				}
 
 			}
 
-			double saving = (expense) - (-income);
+			BigDecimal saving = new BigDecimal(String.valueOf(expense)).add(new BigDecimal(String.valueOf(income)));
 			transactionLedger = new TransactionLedger();
 			transactionLedger.setTotalExpense(expense);
 			transactionLedger.setTotalIncome(income);
 			transactionLedger.setTotalSaving(saving);
 			transactionLedger.setHighestSpendings(highestSpending);
 			transactionLedger.setHighestSpendingMonth(month);
+
+			Optional<Entry<String, BigDecimal>> maxEntry = highestSpendingMap.entrySet().stream()
+					.min((Entry<String, BigDecimal> e1, Entry<String, BigDecimal> e2) -> e1.getValue()
+							.compareTo(e2.getValue()));
+			highestSpending = maxEntry.get().getValue();
+
+			highestSpendingMap.entrySet().stream()
+					.forEach(val -> System.out.println(val.getKey() + " ==== " + val.getValue()));
 
 			System.out.println("Expense ==" + expense + "  Income== " + income + " Saving   == " + saving
 					+ " highestSpending == " + highestSpending + " Month ==" + month);
@@ -89,7 +116,7 @@ public class TransactionService {
 	 * @throws Exception
 	 */
 	public Date getSimpleDateFormat(String dateString) throws Exception {
-		Date date = new SimpleDateFormat("DD-MM-yyyy").parse(dateString);
+		Date date = new SimpleDateFormat("dd-MM-yyyy").parse(dateString);
 		return date;
 	}
 

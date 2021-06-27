@@ -1,5 +1,7 @@
 package com.tcs.transaction;
 
+import java.math.BigDecimal;
+
 /**
  * TransactionLedger
  * @author Ramesh
@@ -7,46 +9,46 @@ package com.tcs.transaction;
  */
 public class TransactionLedger {
 
-	private double totalExpense;
-	private double totalIncome;
-	private double totalSaving;
-	private double highestSpendings;
+	private BigDecimal totalExpense;
+	private BigDecimal totalIncome;
+	private BigDecimal totalSaving;
+	private BigDecimal highestSpendings;
 	private String highestSpendingMonth;
 
 	public TransactionLedger() {
 		super();
 	}
 
-	public double getTotalExpense() {
+	public BigDecimal getTotalExpense() {
 		return totalExpense;
 	}
 
-	public void setTotalExpense(double totalExpense) {
-		this.totalExpense = totalExpense;
+	public void setTotalExpense(BigDecimal expense) {
+		this.totalExpense = expense;
 	}
 
-	public double getTotalIncome() {
+	public BigDecimal getTotalIncome() {
 		return totalIncome;
 	}
 
-	public void setTotalIncome(double totalIncome) {
-		this.totalIncome = totalIncome;
+	public void setTotalIncome(BigDecimal income) {
+		this.totalIncome = income;
 	}
 
-	public double getTotalSaving() {
+	public BigDecimal getTotalSaving() {
 		return totalSaving;
 	}
 
-	public void setTotalSaving(double totalSaving) {
-		this.totalSaving = totalSaving;
+	public void setTotalSaving(BigDecimal saving) {
+		this.totalSaving = saving;
 	}
 
-	public double getHighestSpendings() {
+	public BigDecimal getHighestSpendings() {
 		return highestSpendings;
 	}
 
-	public void setHighestSpendings(double highestSpendings) {
-		this.highestSpendings = highestSpendings;
+	public void setHighestSpendings(BigDecimal highestSpending) {
+		this.highestSpendings = highestSpending;
 	}
 
 	public String getHighestSpendingMonth() {

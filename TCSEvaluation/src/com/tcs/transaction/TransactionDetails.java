@@ -1,18 +1,19 @@
 package com.tcs.transaction;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class TransactionDetails {
 
 	private Date dateOfTransaction;
-	private double amount;
+	private BigDecimal amount;
 	private String creditDetails;
 
 	public TransactionDetails() {
 		super();
 	}
 
-	public TransactionDetails(Date dateOfTransaction, double amount, String creditDetails) {
+	public TransactionDetails(Date dateOfTransaction, BigDecimal amount, String creditDetails) {
 		super();
 		this.dateOfTransaction = dateOfTransaction;
 		this.amount = amount;
@@ -27,11 +28,11 @@ public class TransactionDetails {
 		this.dateOfTransaction = dateOfTransaction;
 	}
 
-	public double getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
 
-	public void setAmount(double amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 

@@ -3,33 +3,35 @@ package com.tcs.transaction;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
+
 import org.junit.jupiter.api.Test;
 
 /**
  * TransactionServiceTest
+ * 
  * @author Ramesh
  *
  */
 class TransactionServiceTest {
 
 	/**
-	 * Method to perform all the transaction test cases.
-	 * getTransactionDetailsTest
+	 * 
+	 * Method to perform all the transaction test cases. getTransactionDetailsTest
 	 */
 	@Test
 	public void getTransactionDetailsTest() {
 
 		TransactionService transactionService = new TransactionService();
 		TransactionLedger transactionLedger = transactionService.getTransactionDetails();
-		assertTrue(transactionLedger.getTotalIncome() == 20000.6);
-		assertTrue(transactionLedger.getHighestSpendingMonth().equals("January"));
-		assertTrue(transactionLedger.getTotalExpense() == -8540.900000000001);
-		assertTrue(transactionLedger.getTotalSaving() == 11459.699999999997);
-		assertTrue(transactionLedger.getHighestSpendings() == -4000.0);
+		assertTrue(transactionLedger.getTotalIncome().equals(BigDecimal.valueOf(40001.2)));
+		assertTrue(transactionLedger.getHighestSpendingMonth().equals("February"));
+		assertTrue(transactionLedger.getTotalExpense().equals(BigDecimal.valueOf(-31341.2)));
+		assertTrue(transactionLedger.getTotalSaving().equals(BigDecimal.valueOf(8660.0)));
+		assertTrue(transactionLedger.getHighestSpendings().equals(BigDecimal.valueOf(-19600.6)));
 
 	}
-	
-	
+
 	/**
 	 * Method to perform all the transaction test cases invalid output data.
 	 * getTransactionDetailsIncorrectDataTest
@@ -40,11 +42,11 @@ class TransactionServiceTest {
 
 		TransactionService transactionService = new TransactionService();
 		TransactionLedger transactionLedger = transactionService.getTransactionDetails();
-		assertFalse(transactionLedger.getTotalIncome() == 21000.6);
-		assertFalse(transactionLedger.getHighestSpendingMonth().equals("February"));
-		assertFalse(transactionLedger.getTotalExpense() == -840.900000000001);
-		assertFalse(transactionLedger.getTotalSaving() == 11159.699999999997);
-		assertFalse(transactionLedger.getHighestSpendings() == -4300.0);
+		assertFalse(transactionLedger.getTotalIncome().equals(BigDecimal.valueOf(24000.6)));
+		assertFalse(transactionLedger.getHighestSpendingMonth().equals("January"));
+		assertFalse(transactionLedger.getTotalExpense().equals(BigDecimal.valueOf(-8440.900000000001)));
+		assertFalse(transactionLedger.getTotalSaving().equals(BigDecimal.valueOf(11449.699999999997)));
+		assertFalse(transactionLedger.getHighestSpendings().equals(BigDecimal.valueOf(-4400.0)));
 
 	}
 
